@@ -1,16 +1,12 @@
-from flask import Flask, request
-from db import get_all_employees
-from db import add_employees
-from db import get_employee_by_id
-from db import update_employee
-from db import delete_employee
+from flask import Blueprint, request
+from app.db.connection import (
+    get_all_employees, add_employees, get_employee_by_id, update_employee, delete_employee
+)
+
+employees_bp = Blueprint("employees", __name__)
 
 
-# Tworzymy aplikację Flask
-app = Flask(__name__)
-
-# Główna strona ("/")
-@app.route("/", methods=["GET","POST"])
+@employees_bp.route("/", methods=["GET","POST"])
 def home():
     list_employees = get_all_employees()
     html = "<h1>Lista pracowników</h1><ul>"
@@ -29,8 +25,8 @@ def home():
         "<label>Phone number:</label><br><input type='text' name='phone'><br>" \
         "<input type='submit'></form>"
 
-# strona z edycją ("/edit")
-@app.route("/edit/<int:emp_id>", methods=["GET","POST"])
+
+@employees_bp.route("/edit/<int:emp_id>", methods=["GET","POST"])
 def employee(emp_id):
     if request.method == "POST":
         update_employee(request.form["first_name"],request.form["last_name"],request.form["address"],request.form["country"],request.form["phone"],emp_id)
@@ -48,7 +44,7 @@ def employee(emp_id):
             f"<a href='/'>Zobacz listę pracowników</a>")
 
 
-@app.route("/delete/<int:emp_id>", methods=["GET","POST"])
+@employees_bp.route("/delete/<int:emp_id>", methods=["GET","POST"])
 def delete(emp_id):
     if request.method == "POST":
         delete_employee(emp_id)
@@ -60,7 +56,7 @@ def delete(emp_id):
             f"<input type='submit' >TAK</form>"\
             f"<a href='/'>Wróc do listy pracowników</a>")
 
-# Uruchomienie serwera
+
 if __name__ == "__main__":
     app.run(debug=True)
 
