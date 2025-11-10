@@ -1,47 +1,39 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, render_template
 from app.db.connection import (
     get_all_employees, add_employees, get_employee_by_id, update_employee, delete_employee
 )
+
 
 employees_bp = Blueprint("employees", __name__)
 
 
 @employees_bp.route("/", methods=["GET","POST"])
 def home():
-    list_employees = get_all_employees()
-    html = "<h1>Lista pracowników</h1><ul>"
-    for emp in list_employees:
-        html += f"<li>{emp}<a href='/edit/{emp[0]}'><button type='button'>Edytuj</button></a><a href='/delete/{emp[0]}'><button type='button'>Usuń</button></a></li>"
-    html += "</ul>"
-    if request.method == "POST":
-        add_employees(request.form["first_name"],request.form["last_name"],request.form["address"],request.form["country"],request.form["phone"])
-        return "<h1>Wysłano formularz</h1><br><a href='/'>Zobacz listę pracowników</a>" 
+      
+    if request.method == "GET":
+        html = render_template("employees/list.html",list_employees=get_all_employees())
+        return html
     else:
-        return html + "<br><h1>Wypełnij formularz</h1><br><form method='POST'>" \
-        "<label>First name:</label><br><input type='text' name='first_name'><br>" \
-        "<label>Last name:</label><br><input type='text' name='last_name'><br>" \
-        "<label>Adres:</label><br><input type='text' name='address'><br>" \
-        "<label>Country:</label><br><input type='text' name='country'><br>" \
-        "<label>Phone number:</label><br><input type='text' name='phone'><br>" \
-        "<input type='submit'></form>"
-
+        add_employees(request.form["first_name"],
+                      request.form["last_name"],
+                      request.form["address"],
+                      request.form["country"],
+                      request.form["phone"])
+        return redirect("/") 
 
 @employees_bp.route("/edit/<int:emp_id>", methods=["GET","POST"])
 def employee(emp_id):
-    if request.method == "POST":
-        update_employee(request.form["first_name"],request.form["last_name"],request.form["address"],request.form["country"],request.form["phone"],emp_id)
-        return "<h1>Edytowano dane</h1><a href='/'>Zobacz listę pracowników</a>"
+    if request.method == "GET":
+        html = render_template("employees/edit.html" ,employee_data = get_employee_by_id(emp_id))
+        return html        
     else:
-        employee_data = get_employee_by_id(emp_id)
-        return (f"<br><h1>Wypełnij formularz edycji danych</h1><br><form method='POST'>" \
-            f"<p>Obecne dane: {employee_data}</p>"
-            f"<label>First name:</label><br><input type='text' name='first_name'><br>" \
-            f"<label>Last name:</label><br><input type='text' name='last_name'><br>" \
-            f"<label>Adres:</label><br><input type='text' name='address'><br>" \
-            f"<label>Country:</label><br><input type='text' name='country'><br>" \
-            f"<label>Phone number:</label><br><input type='text' name='phone'><br>" \
-            f"<input type='submit' >Zapisz</form>"\
-            f"<a href='/'>Zobacz listę pracowników</a>")
+        update_employee(request.form["first_name"],
+                        request.form["last_name"],
+                        request.form["address"],
+                        request.form["country"],
+                        request.form["phone"],
+                        emp_id)
+        return redirect("/")
 
 
 @employees_bp.route("/delete/<int:emp_id>", methods=["GET","POST"])

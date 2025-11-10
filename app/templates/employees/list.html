@@ -1,0 +1,29 @@
+<!doctype html>
+
+<html>
+    <head>
+        
+    </head>
+    <body>
+        <h1>Lista pracowników</h1>
+        <ul>
+        {% for emp in list_employees %}
+        <li>
+            {{emp[0]}}
+            <a href='/edit/{{emp[0]}}'><button type='button'>Edytuj</button></a>
+            <a href='/delete/{{emp[0]}}'><button type='button'>Usuń</button></a>
+        </li>
+        {% endfor %}
+        </ul>
+        <br><h1>Wypełnij formularz</h1><br><form method='POST'>
+        <label>First name:</label><br><input type='text' name='first_name'><br>
+        <label>Last name:</label><br><input type='text' name='last_name'><br>
+        <label>Adres:</label><br><input type='text' name='address'><br>
+        <label>Country:</label><br><input type='text' name='country'><br>
+        <label>Phone number:</label><br><input type='text' name='phone'><br>
+        <input type='submit'></form>
+    </body>
+</html>
+
+
+

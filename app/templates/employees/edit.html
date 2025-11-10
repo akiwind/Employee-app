@@ -1,0 +1,17 @@
+<!doctype html>
+
+<html>
+    <head>
+
+    </head>
+    <body>
+        <h1>Wypełnij formularz edycji danych</h1><br><form method='POST'><br>
+            <label>First name:</label><br><input type='text' name='first_name' value="{{ employee_data[1] }}"><br>
+            <label>Last name:</label><br><input type='text' name='last_name' value="{{ employee_data[2] }}"><br>
+            <label>Adres:</label><br><input type='text' name='address' value="{{ employee_data[3] }}"><br>
+            <label>Country:</label><br><input type='text' name='country' value="{{ employee_data[4] }}"><br>
+            <label>Phone number:</label><br><input type='text' name='phone' value="{{ employee_data[5] }}"><br>
+            <input type='submit'>Zapisz</form>
+            <a href='/'>Wróć do listy pracowników</a>
+    </body>
+</html>
