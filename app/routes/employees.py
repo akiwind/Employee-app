@@ -1,8 +1,6 @@
 from flask import Blueprint, request, render_template
-from app.db.connection import (
-    get_all_employees, add_employees, get_employee_by_id, update_employee, delete_employee
-)
-
+from app.db.employees_repo import (
+    get_all_employees, add_employees, get_employee_by_id, update_employee, delete_employee)
 
 employees_bp = Blueprint("employees", __name__)
 
@@ -23,6 +21,7 @@ def home():
 
 @employees_bp.route("/edit/<int:emp_id>", methods=["GET","POST"])
 def employee(emp_id):
+
     if request.method == "GET":
         html = render_template("employees/edit.html" ,employee_data = get_employee_by_id(emp_id))
         return html        
@@ -38,15 +37,12 @@ def employee(emp_id):
 
 @employees_bp.route("/delete/<int:emp_id>", methods=["GET","POST"])
 def delete(emp_id):
-    if request.method == "POST":
-        delete_employee(emp_id)
-        return "<h1>Usunieto pracownika</h1><a href='/'>Zobacz listę pracowników</a>"
+    if request.method == "GET":
+        html = render_template("employees/delete.html" ,employee_data = get_employee_by_id(emp_id))
+        return html      
     else:
-        employee_data = get_employee_by_id(emp_id)
-        return (f"<br><h1>Czy na pewno chcesz usunąć pracownika z listy?</h1><br><form method='POST'>" \
-            f"<p>Obecne dane: {employee_data}</p>"
-            f"<input type='submit' >TAK</form>"\
-            f"<a href='/'>Wróc do listy pracowników</a>")
+        delete_employee(emp_id)
+        return redirect("/")
 
 
 if __name__ == "__main__":
