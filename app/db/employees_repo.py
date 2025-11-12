@@ -1,4 +1,4 @@
-from db.connection import get_conn
+from app.db.connection import get_conn
 
 def add_employees(first_name, last_name, address, country, phone):
     conn = get_conn()
@@ -69,3 +69,12 @@ def delete_employee(employees_id):
     cur.close()
     conn.close()
     return
+
+def phone_exists(phone):
+    conn = get_conn()
+    cur = conn.cursor()
+    cur.execute("SELECT COUNT(*) FROM employees WHERE phone = %s", (phone,))
+    count = cur.fetchone()[0]
+    cur.close()
+    conn.close()
+    return count > 0

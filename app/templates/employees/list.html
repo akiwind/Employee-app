@@ -9,11 +9,14 @@
         <ul>
         {% for emp in list_employees %}
         <li>
-            {{emp[0]}}
-            <a href='/edit/{{emp[0]}}'><button type='button'>Edytuj</button></a>
-            <a href='/delete/{{emp[0]}}'><button type='button'>Usuń</button></a>
+            {{emp}}
+            <a href='employees/edit/{{emp[0]}}'><button type='button'>Edytuj</button></a>
+            <a href='employees/delete/{{emp[0]}}'><button type='button'>Usuń</button></a>
         </li>
         {% endfor %}
+        {% if error %}
+        <p style="color:red;">{{ error }}</p>
+        {% endif %}
         </ul>
         <br><h1>Wypełnij formularz</h1><br><form method='POST'>
         <label>First name:</label><br><input type='text' name='first_name'><br>
@@ -21,7 +24,8 @@
         <label>Adres:</label><br><input type='text' name='address'><br>
         <label>Country:</label><br><input type='text' name='country'><br>
         <label>Phone number:</label><br><input type='text' name='phone'><br>
-        <input type='submit'></form>
+        <input type='submit'></form><br>
+        <a href='/'>Idz do strony startowej</a>
     </body>
 </html>
 

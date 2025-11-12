@@ -1,0 +1,29 @@
+<!doctype html>
+
+<html>
+    <head>
+        
+    </head>
+    <body>
+        <h1>Lista produktów</h1>
+        <ul>
+        {% for ite in list_items %}
+        <li>
+            {{ite}}
+            <a href='/werehouse/edit/{{ite[0]}}'><button type='button'>Edytuj</button></a>
+            <a href='/werehouse/delete/{{ite[0]}}'><button type='button'>Usuń</button></a>
+        </li>
+        {% endfor %}
+        {% if error %}
+        <p style="color:red;">{{ error }}</p>
+        {% endif %}
+        </ul>
+        <br><h1>Wypełnij formularz</h1><br><form method='POST'>
+        <label>Item name:</label><br><input type='text' name='item_name'><br>
+        <label>Quantity:</label><br><input type='text' name='item_quantity'><br>
+        <label>Value:</label><br><input type='text' name='item_value'><br>
+        <label>Category:</label><br><input type='text' name='item_category'><br>
+        <input type='submit'></form><br>
+        <a href='/'>Idz do strony startowej</a>
+    </body>
+</html>
