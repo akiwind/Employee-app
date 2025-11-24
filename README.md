@@ -1,0 +1,1 @@
+System zarządzania danymi pracowników i magazynem, połaczony z bazą danych (CRUD) oparty na frameworku Flask. Aplikacja została zbudowana w oparciu o architekturę modułową (Blueprint) w celu zapewnienia czytelności i łatwej rozbudowy.
